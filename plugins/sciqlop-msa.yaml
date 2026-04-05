@@ -7,6 +7,6 @@ github: SciQLop/sciqlop-plugins
 tags: [data-provider, bepi-colombo, msa]
 
 versions:
-  - version: "0.1.0"
+  - version: "0.2.0"
     sciqlop: ">=0.10"
-    pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/v0.1.0/sciqlop_msa-0.1.0-py3-none-any.whl
+    pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_msa/v0.2.0/sciqlop_msa-0.2.0-py3-none-any.whl
