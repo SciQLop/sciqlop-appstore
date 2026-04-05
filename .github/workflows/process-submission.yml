@@ -1,0 +1,51 @@
+name: Process store submission
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  process:
+    if: github.event.label.name == 'approved'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Parse issue and generate YAML
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_LABELS: ${{ toJson(github.event.issue.labels.*.name) }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: python .github/scripts/process_issue.py
+
+      - name: Create PR
+        if: env.BRANCH_NAME != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH_NAME"
+          git add -A
+          git commit -m "$COMMIT_MSG"
+          git push -u origin "$BRANCH_NAME"
+          gh pr create \
+            --title "$COMMIT_MSG" \
+            --body "Auto-generated from #${ISSUE_NUMBER}." \
+            --base main \
+            --head "$BRANCH_NAME"
+          gh issue comment "$ISSUE_NUMBER" \
+            --body "PR created automatically. It will be published once merged."

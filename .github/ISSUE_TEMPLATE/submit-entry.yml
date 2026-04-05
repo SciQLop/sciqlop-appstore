@@ -1,0 +1,63 @@
+name: Submit a workspace, template, or example
+description: Add a non-plugin entry to the SciQLop store
+labels: ["submit"]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Entry type
+      options:
+        - workspace
+        - template
+        - example
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      placeholder: "MMS Reconnection Events"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      placeholder: "One-line description"
+    validations:
+      required: true
+
+  - type: input
+    id: author
+    attributes:
+      label: Author
+      placeholder: "Your Name or Team"
+    validations:
+      required: true
+
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Comma-separated list of tags
+      placeholder: "mms, reconnection, catalog"
+    validations:
+      required: true
+
+  - type: input
+    id: github
+    attributes:
+      label: GitHub repository
+      description: "owner/repo (optional)"
+      placeholder: "SciQLop/sciqlop-examples"
+
+  - type: input
+    id: url
+    attributes:
+      label: Download URL
+      description: Direct link to the file or archive
+      placeholder: "https://github.com/.../my-workspace.zip"
+    validations:
+      required: true

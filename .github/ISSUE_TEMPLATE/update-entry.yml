@@ -1,0 +1,41 @@
+name: Update an existing entry
+description: Add a new version or update metadata for an existing store entry
+labels: ["update"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Entry name
+      description: Exact name as it appears in the store
+      placeholder: "CDF Workbench"
+    validations:
+      required: true
+
+  - type: textarea
+    id: changes
+    attributes:
+      label: What to update
+      description: |
+        Describe what changed.  For a new version, fill the fields below.
+        For metadata changes (description, tags, author, etc.), describe them here.
+      placeholder: "New version 0.2.0 with support for ..."
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: New version (if adding a release)
+      placeholder: "0.2.0"
+
+  - type: input
+    id: sciqlop_compat
+    attributes:
+      label: SciQLop compatibility
+      placeholder: ">=0.10"
+
+  - type: input
+    id: pip
+    attributes:
+      label: pip install target
+      placeholder: "my-plugin==0.2.0 or https://github.com/.../my_plugin-0.2.0-py3-none-any.whl"

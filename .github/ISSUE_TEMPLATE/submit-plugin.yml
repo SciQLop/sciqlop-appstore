@@ -1,0 +1,83 @@
+name: Submit a plugin
+description: Add a new plugin to the SciQLop store
+labels: ["submit", "plugin"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Plugin name
+      placeholder: "My Awesome Plugin"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      placeholder: "One-line description of what your plugin does"
+    validations:
+      required: true
+
+  - type: input
+    id: author
+    attributes:
+      label: Author
+      placeholder: "Your Name or Team"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: license
+    attributes:
+      label: License
+      options:
+        - MIT
+        - Apache-2.0
+        - GPL-3.0
+        - BSD-3-Clause
+        - LGPL-3.0
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Comma-separated list of tags
+      placeholder: "data-provider, analysis, mms"
+    validations:
+      required: true
+
+  - type: input
+    id: github
+    attributes:
+      label: GitHub repository
+      description: "owner/repo — used to display star count (optional)"
+      placeholder: "SciQLop/sciqlop-plugins"
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: sciqlop_compat
+    attributes:
+      label: SciQLop compatibility
+      description: PEP 440 version specifier
+      placeholder: ">=0.10"
+    validations:
+      required: true
+
+  - type: input
+    id: pip
+    attributes:
+      label: pip install target
+      description: PyPI package name or direct URL to a wheel
+      placeholder: "my-plugin==0.1.0 or https://github.com/.../my_plugin-0.1.0-py3-none-any.whl"
+    validations:
+      required: true
