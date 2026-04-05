@@ -4,9 +4,14 @@ description: Multi-function CDF file explorer for SciQLop
 author: Alexis Jeandet
 license: MIT
 github: SciQLop/sciqlop-plugins
-tags: [cdf, inspector, tools]
-
+tags:
+- cdf
+- inspector
+- tools
 versions:
-  - version: "0.1.0"
-    sciqlop: ">=0.10"
-    pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/v0.1.0/sciqlop_cdf_workbench-0.1.0-py3-none-any.whl
+- version: 0.1.0
+  sciqlop: '>=0.10'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/v0.1.0/sciqlop_cdf_workbench-0.1.0-py3-none-any.whl
+- version: 0.2.0
+  sciqlop: '>=0.10'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/v0.2.0/sciqlop_cdf_workbench-0.1.0-py3-none-any.whl
