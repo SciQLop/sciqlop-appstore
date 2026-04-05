@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SciQLop Plugin Store</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-hover: #222633;
+    --border: #2a2e3d;
+    --text: #e1e4ed;
+    --text-muted: #8b90a0;
+    --accent: #6c8cff;
+    --accent-dim: #4a6ad9;
+    --tag-bg: #252940;
+    --tag-text: #9aa4d0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 0;
+    text-align: center;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  header h1 span { color: var(--accent); }
+
+  header .subtitle {
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+    font-size: 0.95rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .toolbar {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .search {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.6rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search:focus { border-color: var(--accent); }
+  .search::placeholder { color: var(--text-muted); }
+
+  .tags-bar {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .tag-filter {
+    padding: 0.3rem 0.7rem;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border: 1px solid transparent;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .tag-filter:hover { border-color: var(--accent-dim); }
+  .tag-filter.active { background: var(--accent-dim); color: #fff; border-color: var(--accent); }
+
+  .count {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: border-color 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover {
+    border-color: var(--accent-dim);
+    transform: translateY(-2px);
+  }
+
+  .card h2 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .card .desc {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    flex: 1;
+    margin-bottom: 0.75rem;
+  }
+
+  .card .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .card .tags {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .card .tag {
+    padding: 0.15rem 0.55rem;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border-radius: 99px;
+    font-size: 0.75rem;
+  }
+
+  .card .versions-row {
+    margin-top: 0.6rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .card .versions-row code {
+    background: var(--tag-bg);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    color: var(--accent);
+  }
+
+  .install-hint {
+    font-family: monospace;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+    word-break: break-all;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 3rem 0;
+    font-size: 0.95rem;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header .logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 0.8rem;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+
+  footer a { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    header h1 { font-size: 1.4rem; }
+    header .logo { width: 60px; height: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img class="logo" src="https://raw.githubusercontent.com/SciQLop/SciQLop/main/SciQLop/resources/icons/SciQLop.png" alt="SciQLop">
+  <h1><span>SciQLop</span> Plugin Store</h1>
+  <p class="subtitle">Extend SciQLop with community plugins for data access, analysis, and visualization.</p>
+  <p class="subtitle">Browse the catalog below or filter by tag. Plugins are installed directly from SciQLop's built-in app store.</p>
+</header>
+
+<div class="container">
+  <div class="toolbar">
+    <input class="search" type="text" id="search" placeholder="Search plugins..." autocomplete="off">
+  </div>
+
+  <div class="tags-bar" id="tags-bar"></div>
+
+  <div class="count" id="count"></div>
+
+  <h2 class="section-title" id="section-title">All plugins</h2>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="empty" id="empty" style="display:none">No plugins match your search.</div>
+</div>
+
+<footer>
+  <div>
+    <a href="https://github.com/SciQLop/SciQLop">SciQLop</a> — Scientific Qt application for Learning from Observations of Plasmas
+  </div>
+  <div>
+    The development of SciQLop is supported by the <a href="http://www.cdpp.eu/">CDPP</a>.
+    We acknowledge support from the federation <a href="https://www.plasapar.sorbonne-universite.fr">Plas@Par</a>.
+  </div>
+</footer>
+
+<script>
+const PLUGINS = {{ plugins_json }};
+
+const allTags = [...new Set(PLUGINS.flatMap(p => p.tags || []))].sort();
+const activeTags = new Set();
+
+function render() {
+  const q = document.getElementById("search").value.toLowerCase();
+  const filtered = PLUGINS.filter(p => {
+    const matchesSearch = !q || p.name.toLowerCase().includes(q)
+      || p.description.toLowerCase().includes(q)
+      || (p.tags || []).some(t => t.includes(q));
+    const matchesTags = activeTags.size === 0
+      || [...activeTags].every(t => (p.tags || []).includes(t));
+    return matchesSearch && matchesTags;
+  });
+
+  const grid = document.getElementById("grid");
+  const empty = document.getElementById("empty");
+  const count = document.getElementById("count");
+
+  const title = document.getElementById("section-title");
+  count.textContent = `Showing ${filtered.length} of ${PLUGINS.length} plugins`;
+  empty.style.display = filtered.length ? "none" : "block";
+  title.textContent = (q || activeTags.size) ? `Matching plugins` : `All plugins`;
+
+  grid.innerHTML = filtered.map(p => {
+    const latest = p.versions[p.versions.length - 1];
+    const tags = (p.tags || []).map(t =>
+      `<span class="tag">${t}</span>`
+    ).join("");
+
+    const versionList = p.versions.map(v =>
+      `<code>${v.version}</code> (SciQLop ${v.sciqlop})`
+    ).join(", ");
+
+    const installCmd = `uv pip install ${latest.pip}`;
+
+    return `<div class="card">
+      <h2>${p.name}</h2>
+      <div class="desc">${p.description}</div>
+      <div class="meta">
+        <span>${p.author}</span>
+        <span>${p.license}</span>
+      </div>
+      <div class="tags">${tags}</div>
+      <div class="versions-row">Versions: ${versionList}</div>
+      <div class="install-hint">${installCmd}</div>
+    </div>`;
+  }).join("");
+}
+
+function renderTags() {
+  document.getElementById("tags-bar").innerHTML = allTags.map(t =>
+    `<button class="tag-filter${activeTags.has(t) ? " active" : ""}" data-tag="${t}">${t}</button>`
+  ).join("");
+}
+
+document.getElementById("tags-bar").addEventListener("click", e => {
+  const btn = e.target.closest(".tag-filter");
+  if (!btn) return;
+  const tag = btn.dataset.tag;
+  activeTags.has(tag) ? activeTags.delete(tag) : activeTags.add(tag);
+  renderTags();
+  render();
+});
+
+document.getElementById("search").addEventListener("input", render);
+renderTags();
+render();
+</script>
+
+</body>
+</html>

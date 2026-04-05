@@ -1,0 +1,43 @@
+# Example CI for a plugin bundle repo (e.g. sciqlop-plugins).
+# On tag push, builds a wheel for each plugin subdirectory
+# and attaches them to a GitHub release.
+#
+# Plugin directories are auto-discovered: any subdirectory containing
+# a pyproject.toml is treated as a plugin.
+
+name: Release plugins
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build tool
+        run: pip install build
+
+      - name: Build wheels
+        run: |
+          mkdir -p dist
+          for dir in */; do
+            if [ -f "${dir}pyproject.toml" ]; then
+              echo "Building $(basename "$dir")"
+              python -m build --wheel --outdir dist "$dir"
+            fi
+          done
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.whl
+          generate_release_notes: true

@@ -1,0 +1,10 @@
+name: MSA BepiColombo
+description: MSA instrument data access and quick-look panels for BepiColombo/MMO
+author: LPP Team
+license: MIT
+tags: [data-provider, bepi-colombo, msa]
+
+versions:
+  - version: "0.1.0"
+    sciqlop: ">=0.10"
+    pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/v0.1.0/sciqlop_msa-0.1.0-py3-none-any.whl
