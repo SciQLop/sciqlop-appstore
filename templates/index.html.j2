@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SciQLop Plugin Store</title>
+<title>SciQLop Store</title>
 <style>
   :root {
     --bg: #0f1117;
@@ -86,6 +86,31 @@
   .search:focus { border-color: var(--accent); }
   .search::placeholder { color: var(--text-muted); }
 
+  /* --- Category tabs --- */
+
+  .tab-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+  }
+
+  .tab-btn {
+    padding: 0.5rem 1.2rem;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
   .tags-bar {
     display: flex;
     gap: 0.4rem;
@@ -140,6 +165,17 @@
     margin-bottom: 0.3rem;
   }
 
+  .card .type-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    background: var(--accent-dim);
+    color: #fff;
+    margin-bottom: 0.4rem;
+    text-transform: capitalize;
+  }
+
   .card .desc {
     color: var(--text-muted);
     font-size: 0.88rem;
@@ -155,6 +191,8 @@
     color: var(--text-muted);
     margin-bottom: 0.6rem;
   }
+
+  .card .stars { color: var(--accent); }
 
   .card .tags {
     display: flex;
@@ -232,25 +270,33 @@
 
 <header>
   <img class="logo" src="https://raw.githubusercontent.com/SciQLop/SciQLop/main/SciQLop/resources/icons/SciQLop.png" alt="SciQLop">
-  <h1><span>SciQLop</span> Plugin Store</h1>
-  <p class="subtitle">Extend SciQLop with community plugins for data access, analysis, and visualization.</p>
-  <p class="subtitle">Browse the catalog below or filter by tag. Plugins are installed directly from SciQLop's built-in app store.</p>
+  <h1><span>SciQLop</span> Store</h1>
+  <p class="subtitle">Extend SciQLop with community plugins, workspaces, templates, and examples.</p>
+  <p class="subtitle">Browse the catalog below or filter by category and tag.</p>
 </header>
 
 <div class="container">
+  <div class="tab-bar" id="tab-bar">
+    <button class="tab-btn active" data-category="">All</button>
+    <button class="tab-btn" data-category="plugin">Plugins</button>
+    <button class="tab-btn" data-category="workspace">Workspaces</button>
+    <button class="tab-btn" data-category="template">Templates</button>
+    <button class="tab-btn" data-category="example">Examples</button>
+  </div>
+
   <div class="toolbar">
-    <input class="search" type="text" id="search" placeholder="Search plugins..." autocomplete="off">
+    <input class="search" type="text" id="search" placeholder="Search..." autocomplete="off">
   </div>
 
   <div class="tags-bar" id="tags-bar"></div>
 
   <div class="count" id="count"></div>
 
-  <h2 class="section-title" id="section-title">All plugins</h2>
+  <h2 class="section-title" id="section-title">All</h2>
 
   <div class="grid" id="grid"></div>
 
-  <div class="empty" id="empty" style="display:none">No plugins match your search.</div>
+  <div class="empty" id="empty" style="display:none">No entries match your search.</div>
 </div>
 
 <footer>
@@ -264,14 +310,16 @@
 </footer>
 
 <script>
-const PLUGINS = {{ plugins_json }};
+const ENTRIES = {{ entries_json }};
 
-const allTags = [...new Set(PLUGINS.flatMap(p => p.tags || []))].sort();
+const allTags = [...new Set(ENTRIES.flatMap(p => p.tags || []))].sort();
 const activeTags = new Set();
+let activeCategory = "";
 
 function render() {
   const q = document.getElementById("search").value.toLowerCase();
-  const filtered = PLUGINS.filter(p => {
+  const filtered = ENTRIES.filter(p => {
+    if (activeCategory && (p.type || "plugin") !== activeCategory) return false;
     const matchesSearch = !q || p.name.toLowerCase().includes(q)
       || p.description.toLowerCase().includes(q)
       || (p.tags || []).some(t => t.includes(q));
@@ -283,34 +331,47 @@ function render() {
   const grid = document.getElementById("grid");
   const empty = document.getElementById("empty");
   const count = document.getElementById("count");
-
   const title = document.getElementById("section-title");
-  count.textContent = `Showing ${filtered.length} of ${PLUGINS.length} plugins`;
+
+  const label = activeCategory
+    ? activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1) + "s"
+    : "All";
+  count.textContent = `Showing ${filtered.length} of ${ENTRIES.length} entries`;
   empty.style.display = filtered.length ? "none" : "block";
-  title.textContent = (q || activeTags.size) ? `Matching plugins` : `All plugins`;
+  title.textContent = (q || activeTags.size) ? `Matching ${label.toLowerCase()}` : label;
 
   grid.innerHTML = filtered.map(p => {
-    const latest = p.versions[p.versions.length - 1];
+    const type = p.type || "plugin";
     const tags = (p.tags || []).map(t =>
       `<span class="tag">${t}</span>`
     ).join("");
 
-    const versionList = p.versions.map(v =>
-      `<code>${v.version}</code> (SciQLop ${v.sciqlop})`
-    ).join(", ");
+    const starsHtml = p.stars != null
+      ? `<span class="stars">\u2B50 ${p.stars}</span>`
+      : "";
 
-    const installCmd = `uv pip install ${latest.pip}`;
+    let versionsHtml = "";
+    let installHtml = "";
+    if (p.versions && p.versions.length) {
+      const latest = p.versions[p.versions.length - 1];
+      const versionList = p.versions.map(v =>
+        `<code>${v.version}</code> (SciQLop ${v.sciqlop})`
+      ).join(", ");
+      versionsHtml = `<div class="versions-row">Versions: ${versionList}</div>`;
+      installHtml = `<div class="install-hint">uv pip install ${latest.pip}</div>`;
+    }
 
     return `<div class="card">
+      <span class="type-badge">${type}</span>
       <h2>${p.name}</h2>
       <div class="desc">${p.description}</div>
       <div class="meta">
         <span>${p.author}</span>
-        <span>${p.license}</span>
+        <span>${p.license || ""} ${starsHtml}</span>
       </div>
       <div class="tags">${tags}</div>
-      <div class="versions-row">Versions: ${versionList}</div>
-      <div class="install-hint">${installCmd}</div>
+      ${versionsHtml}
+      ${installHtml}
     </div>`;
   }).join("");
 }
@@ -327,6 +388,15 @@ document.getElementById("tags-bar").addEventListener("click", e => {
   const tag = btn.dataset.tag;
   activeTags.has(tag) ? activeTags.delete(tag) : activeTags.add(tag);
   renderTags();
+  render();
+});
+
+document.getElementById("tab-bar").addEventListener("click", e => {
+  const btn = e.target.closest(".tab-btn");
+  if (!btn) return;
+  document.querySelector(".tab-btn.active").classList.remove("active");
+  btn.classList.add("active");
+  activeCategory = btn.dataset.category;
   render();
 });
 

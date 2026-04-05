@@ -1,7 +1,9 @@
 name: CDF Workbench
+type: plugin
 description: Multi-function CDF file explorer for SciQLop
 author: Alexis Jeandet
 license: MIT
+github: SciQLop/sciqlop-plugins
 tags: [cdf, inspector, tools]
 
 versions:

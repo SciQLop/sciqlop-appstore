@@ -1,7 +1,9 @@
 name: MSA BepiColombo
+type: plugin
 description: MSA instrument data access and quick-look panels for BepiColombo/MMO
 author: LPP Team
 license: MIT
+github: SciQLop/sciqlop-plugins
 tags: [data-provider, bepi-colombo, msa]
 
 versions:
