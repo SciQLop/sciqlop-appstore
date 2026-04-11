@@ -9,9 +9,9 @@ tags:
 - inspector
 - tools
 versions:
-- version: 0.3.0
-  sciqlop: '>=0.10'
-  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/cdf_workbench/v0.3.0/sciqlop_cdf_workbench-0.3.0-py3-none-any.whl
 - version: 0.2.0
   sciqlop: '>=0.10'
   pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/cdf_workbench/v0.2.0/sciqlop_cdf_workbench-0.2.0-py3-none-any.whl
+- version: 0.3.0
+  sciqlop: '>=0.10'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/cdf_workbench/v0.3.0/sciqlop_cdf_workbench-0.3.0-py3-none-any.whl
