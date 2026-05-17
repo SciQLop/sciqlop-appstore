@@ -1,0 +1,15 @@
+name: Radio Dynamic Spectra
+type: plugin
+description: Heliospheric radio dynamic-spectra browser for SciQLop (wraps sunpy.radiospectra)
+author: Alexis Jeandet
+license: MIT
+github: SciQLop/sciqlop-plugins
+tags:
+- data-provider
+- sun
+- radio
+- heliophysics
+versions:
+- version: 0.1.0
+  sciqlop: '>=0.12,<0.13'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_radio/v0.1.0/sciqlop_radio-0.1.0-py3-none-any.whl

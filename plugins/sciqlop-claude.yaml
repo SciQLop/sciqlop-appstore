@@ -1,0 +1,15 @@
+name: Claude
+type: plugin
+description: Claude chat dock for SciQLop (powered by Claude Code CLI via the Claude Agent SDK)
+author: Alexis Jeandet
+license: MIT
+github: SciQLop/sciqlop-plugins
+tags:
+- agent
+- chat
+- llm
+- anthropic
+versions:
+- version: 0.1.0
+  sciqlop: '>=0.12,<0.13'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_claude/v0.1.0/sciqlop_claude-0.1.0-py3-none-any.whl

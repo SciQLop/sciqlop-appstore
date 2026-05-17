@@ -1,0 +1,14 @@
+name: FDSN Seismology
+type: plugin
+description: SciQLop plugin for FDSN/ObsPy seismic waveforms
+author: Alexis Jeandet
+license: MIT
+github: SciQLop/sciqlop-plugins
+tags:
+- data-provider
+- seismology
+- fdsn
+versions:
+- version: 0.1.1
+  sciqlop: '>=0.12,<0.13'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_sismo/v0.1.1/sciqlop_sismo-0.1.1-py3-none-any.whl

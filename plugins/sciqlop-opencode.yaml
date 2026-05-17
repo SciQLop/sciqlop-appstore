@@ -1,0 +1,14 @@
+name: opencode
+type: plugin
+description: Opencode chat dock for SciQLop (powered by the opencode CLI via opencode-agent-sdk)
+author: Alexis Jeandet
+license: MIT
+github: SciQLop/sciqlop-plugins
+tags:
+- agent
+- chat
+- llm
+versions:
+- version: 0.1.0
+  sciqlop: '>=0.12,<0.13'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_opencode/v0.1.0/sciqlop_opencode-0.1.0-py3-none-any.whl
