@@ -9,6 +9,9 @@ tags:
 - sun
 - radio
 - heliophysics
+image: https://sciqlop.github.io/sciqlop-appstore/assets/sciqlop-radio/card.png
+screenshots:
+- https://sciqlop.github.io/sciqlop-appstore/assets/sciqlop-radio/01.png
 versions:
 - version: 0.1.0
   sciqlop: '>=0.12,<0.13'
