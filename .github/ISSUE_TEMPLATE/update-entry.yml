@@ -39,3 +39,19 @@ body:
     attributes:
       label: pip install target
       placeholder: "my-plugin==0.2.0 or https://github.com/.../my_plugin-0.2.0-py3-none-any.whl"
+
+  - type: input
+    id: image
+    attributes:
+      label: Card image URL
+      description: "Optional. Absolute https URL to a landscape card thumbnail (~16:10, ~800x500, PNG/WebP/JPEG, <300 KB)."
+      placeholder: "https://sciqlop.github.io/sciqlop-appstore/assets/my-plugin/card.png"
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshot URLs
+      description: "Optional. One absolute https URL per line, up to ~5. Landscape ~16:9, <300 KB each, showing real SciQLop UI."
+      placeholder: |
+        https://sciqlop.github.io/sciqlop-appstore/assets/my-plugin/01.png
+        https://sciqlop.github.io/sciqlop-appstore/assets/my-plugin/02.png
