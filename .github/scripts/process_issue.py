@@ -41,6 +41,11 @@ def slugify(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
 
 
+def parse_screenshots(value: str) -> list[str]:
+    """One URL per line; strip blanks."""
+    return [line.strip() for line in value.splitlines() if line.strip()]
+
+
 def set_env(key: str, value: str) -> None:
     env_file = os.environ.get("GITHUB_ENV")
     if env_file:
@@ -73,6 +78,13 @@ def handle_submit(fields: dict[str, str], labels: list[str]) -> None:
         entry["github"] = github
 
     entry["tags"] = tags
+
+    image = fields.get("Card image URL", "")
+    if image:
+        entry["image"] = image
+    screenshots = parse_screenshots(fields.get("Screenshot URLs", ""))
+    if screenshots:
+        entry["screenshots"] = screenshots
 
     if is_plugin:
         version_entry = {
@@ -116,6 +128,13 @@ def handle_update(fields: dict[str, str]) -> None:
         raise FileNotFoundError(f"No entry found for '{name}' (tried {slug}.yaml)")
 
     entry = yaml.safe_load(found.read_text())
+
+    image = fields.get("Card image URL", "")
+    if image:
+        entry["image"] = image
+    screenshots = parse_screenshots(fields.get("Screenshot URLs", ""))
+    if screenshots:
+        entry["screenshots"] = screenshots
 
     version = fields.get("New version (if adding a release)", "")
     if version:
