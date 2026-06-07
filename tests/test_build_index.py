@@ -62,6 +62,7 @@ def test_in_repo_existing_file_passes(tmp_path):
 
 
 def test_validate_entry_includes_image_errors(tmp_path):
+    # type="example" avoids plugin-only required-field errors, isolating image checks
     entry = _entry(type="example", image=123)
     errors = build_index.validate_entry(entry, Path("x.yaml"), tmp_path)
     assert any("image" in e for e in errors)

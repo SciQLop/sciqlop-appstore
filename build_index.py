@@ -47,12 +47,12 @@ def _fetch_stars(github_slug: str) -> int | None:
         return None
 
 
-def _is_abs_url(value) -> bool:
+def _is_abs_url(value: object) -> bool:
     return isinstance(value, str) and value.startswith(("http://", "https://"))
 
 
 def _check_in_repo_asset(url: str, path: Path, root: Path) -> list[str]:
-    """If *url* points at this repo's Pages assets, assert the local file exists."""
+    """If *url* points at this repo's Pages assets, verify the local file exists."""
     if not url.startswith(ASSETS_URL_PREFIX):
         return []
     rel = url[len(ASSETS_URL_PREFIX):]
