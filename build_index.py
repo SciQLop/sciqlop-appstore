@@ -27,6 +27,8 @@ REQUIRED_FIELDS = ("name", "description", "author")
 
 PLUGIN_REQUIRED_VERSION_FIELDS = ("version", "sciqlop", "pip")
 
+ASSETS_URL_PREFIX = "https://sciqlop.github.io/sciqlop-appstore/assets/"
+
 
 def _fetch_stars(github_slug: str) -> int | None:
     """Fetch star count for *owner/repo* from the GitHub API.  Returns None on failure."""
@@ -45,7 +47,47 @@ def _fetch_stars(github_slug: str) -> int | None:
         return None
 
 
-def validate_entry(entry: dict, path: Path) -> list[str]:
+def _is_abs_url(value) -> bool:
+    return isinstance(value, str) and value.startswith(("http://", "https://"))
+
+
+def _check_in_repo_asset(url: str, path: Path, root: Path) -> list[str]:
+    """If *url* points at this repo's Pages assets, assert the local file exists."""
+    if not url.startswith(ASSETS_URL_PREFIX):
+        return []
+    rel = url[len(ASSETS_URL_PREFIX):]
+    asset_path = root / "assets" / rel
+    if not asset_path.is_file():
+        return [f"{path.name}: image URL '{url}' but {asset_path} does not exist"]
+    return []
+
+
+def validate_images(entry: dict, path: Path, root: Path) -> list[str]:
+    errors: list[str] = []
+    image = entry.get("image")
+    if image is not None:
+        if not _is_abs_url(image):
+            errors.append(f"{path.name}: 'image' must be an absolute http(s) URL string")
+        else:
+            errors.extend(_check_in_repo_asset(image, path, root))
+    screenshots = entry.get("screenshots")
+    if screenshots is not None:
+        if not isinstance(screenshots, list):
+            errors.append(
+                f"{path.name}: 'screenshots' must be a list of absolute http(s) URL strings"
+            )
+        else:
+            for i, shot in enumerate(screenshots):
+                if not _is_abs_url(shot):
+                    errors.append(
+                        f"{path.name}: screenshots[{i}] must be an absolute http(s) URL string"
+                    )
+                else:
+                    errors.extend(_check_in_repo_asset(shot, path, root))
+    return errors
+
+
+def validate_entry(entry: dict, path: Path, root: Path) -> list[str]:
     errors = []
     for field in REQUIRED_FIELDS:
         if field not in entry:
@@ -59,6 +101,7 @@ def validate_entry(entry: dict, path: Path) -> list[str]:
             for field in PLUGIN_REQUIRED_VERSION_FIELDS:
                 if field not in v:
                     errors.append(f"{path.name}: versions[{i}] missing '{field}'")
+    errors.extend(validate_images(entry, path, root))
     return errors
 
 
@@ -72,7 +115,7 @@ def load_entries(base: Path) -> list[dict]:
         for path in sorted(directory.glob("*.yaml")):
             entry = yaml.safe_load(path.read_text())
             entry.setdefault("type", default_type)
-            errors.extend(validate_entry(entry, path))
+            errors.extend(validate_entry(entry, path, base))
             entries.append(entry)
     if errors:
         for e in errors:
