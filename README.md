@@ -77,6 +77,8 @@ url: https://github.com/.../mms-reconnection-example.zip
 | `author` | yes | Author name or team |
 | `tags` | no | List of tags for filtering |
 | `github` | no | `owner/repo` — star count is fetched at build time |
+| `image` | no | Absolute `https://` URL to a card thumbnail |
+| `screenshots` | no | List of absolute `https://` URLs shown in a carousel |
 
 **Plugin-specific fields:**
 
@@ -98,6 +100,54 @@ url: https://github.com/.../mms-reconnection-example.zip
 | Field | Required | Description |
 |-------|----------|-------------|
 | `url` | yes | Download URL |
+
+---
+
+## Plugin images
+
+Entries may include a card thumbnail and screenshots. Both are **optional** and
+backwards compatible — older SciQLop versions ignore them.
+
+- `image` — a single absolute `https://` URL used as the card thumbnail.
+- `screenshots` — a list of absolute `https://` URLs shown in a carousel.
+
+URLs **must be absolute** (`https://…`). Relative paths fail to load in the in-app
+store, and the build rejects them.
+
+### Hosting (recommended: in this repo)
+
+Commit images under `assets/<slug>/` and reference them by their GitHub Pages URL,
+so they are versioned alongside the registry:
+
+```
+assets/
+  <slug>/
+    card.png        # card thumbnail
+    01.png 02.png   # screenshots, in display order
+```
+
+`<slug>` is your entry's YAML filename stem (e.g. `sciqlop-radio.yaml` →
+`sciqlop-radio`). Reference them as:
+
+```yaml
+image: https://sciqlop.github.io/sciqlop-appstore/assets/<slug>/card.png
+screenshots:
+  - https://sciqlop.github.io/sciqlop-appstore/assets/<slug>/01.png
+  - https://sciqlop.github.io/sciqlop-appstore/assets/<slug>/02.png
+```
+
+The build verifies that any `assets/…` Pages URL has a matching committed file. You
+may also point `image`/`screenshots` at any external absolute URL.
+
+### Image guidelines
+
+- **Formats:** PNG or WebP preferred; JPEG acceptable. No SVG for screenshots.
+- **Card thumbnail:** landscape ~16:10, target ~800×500 (rendered cropped to a
+  full-width 100 px cover on the card).
+- **Screenshots:** landscape ~16:9, 1280×720–1920×1080.
+- **File size:** keep each under ~300 KB.
+- **Count:** up to ~5 screenshots.
+- **Content:** real SciQLop UI showing the plugin in use, not logos or banners.
 
 ---
 
