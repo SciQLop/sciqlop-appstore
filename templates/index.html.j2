@@ -411,9 +411,10 @@ function render() {
     const gallery = (p.screenshots && p.screenshots.length)
       ? p.screenshots
       : (p.image ? [p.image] : []);
-    const galleryAttrs = gallery.length
-      ? ` has-gallery" data-gallery='${JSON.stringify(gallery)}'`
-      : `"`;
+    const galleryClass = gallery.length ? " has-gallery" : "";
+    const galleryData = gallery.length
+      ? ` data-gallery='${JSON.stringify(gallery).replace(/'/g, "&#39;")}'`
+      : "";
     const tags = (p.tags || []).map(t =>
       `<span class="tag">${t}</span>`
     ).join("");
@@ -433,7 +434,7 @@ function render() {
       installHtml = `<div class="install-hint">uv pip install ${latest.pip}</div>`;
     }
 
-    return `<div class="card${galleryAttrs}>
+    return `<div class="card${galleryClass}"${galleryData}>
       ${coverHtml}
       <span class="type-badge">${type}</span>
       <h2>${p.name}</h2>
@@ -478,15 +479,17 @@ document.getElementById("search").addEventListener("input", render);
 const lb = document.getElementById("lightbox");
 const lbImg = document.getElementById("lb-img");
 const lbCounter = document.getElementById("lb-counter");
+const lbPrev = document.getElementById("lb-prev");
+const lbNext = document.getElementById("lb-next");
 let lbGallery = [];
 let lbIndex = 0;
 
 function showSlide() {
   lbImg.src = lbGallery[lbIndex];
-  lbCounter.textContent = `${lbIndex + 1} / ${lbGallery.length}`;
-  const multi = lbGallery.length > 1 ? "" : "none";
-  document.getElementById("lb-prev").style.display = multi;
-  document.getElementById("lb-next").style.display = multi;
+  const multi = lbGallery.length > 1;
+  lbCounter.textContent = multi ? `${lbIndex + 1} / ${lbGallery.length}` : "";
+  lbPrev.style.display = multi ? "" : "none";
+  lbNext.style.display = multi ? "" : "none";
 }
 
 function openLightbox(gallery) {
@@ -514,8 +517,8 @@ document.getElementById("grid").addEventListener("click", e => {
 });
 
 document.getElementById("lb-close").addEventListener("click", closeLightbox);
-document.getElementById("lb-prev").addEventListener("click", e => { e.stopPropagation(); step(-1); });
-document.getElementById("lb-next").addEventListener("click", e => { e.stopPropagation(); step(1); });
+lbPrev.addEventListener("click", e => { e.stopPropagation(); step(-1); });
+lbNext.addEventListener("click", e => { e.stopPropagation(); step(1); });
 lb.addEventListener("click", e => { if (e.target === lb) closeLightbox(); });
 document.addEventListener("keydown", e => {
   if (lb.style.display === "none") return;
