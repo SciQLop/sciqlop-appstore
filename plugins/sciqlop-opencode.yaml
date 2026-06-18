@@ -12,3 +12,6 @@ versions:
 - version: 0.1.0
   sciqlop: '>=0.12,<0.13'
   pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_opencode/v0.1.0/sciqlop_opencode-0.1.0-py3-none-any.whl
+- version: 0.1.1
+  sciqlop: '>=0.12,<0.14'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_opencode/v0.1.1/sciqlop_opencode-0.1.1-py3-none-any.whl

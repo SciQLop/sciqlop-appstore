@@ -1,6 +1,7 @@
 name: Albert (DINUM)
 type: plugin
-description: Albert (DINUM) chat backend for SciQLop — OpenAI-compatible API with tool calling
+description: Albert (DINUM) chat backend for SciQLop — OpenAI-compatible API with
+  tool calling
 author: Alexis Jeandet
 license: MIT
 github: SciQLop/sciqlop-plugins
@@ -12,3 +13,6 @@ versions:
 - version: 0.1.0
   sciqlop: '>=0.12,<0.13'
   pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_albert/v0.1.0/sciqlop_albert-0.1.0-py3-none-any.whl
+- version: 0.1.1
+  sciqlop: '>=0.12,<0.14'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_albert/v0.1.1/sciqlop_albert-0.1.1-py3-none-any.whl

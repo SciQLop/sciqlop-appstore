@@ -1,6 +1,7 @@
 name: GitHub Copilot
 type: plugin
-description: GitHub Copilot Chat backend for SciQLop — OpenAI-compatible API with tool calling, OAuth device-flow login
+description: GitHub Copilot Chat backend for SciQLop — OpenAI-compatible API with
+  tool calling, OAuth device-flow login
 author: Alexis Jeandet
 license: MIT
 github: SciQLop/sciqlop-plugins
@@ -9,7 +10,13 @@ tags:
 - chat
 - llm
 - github
+image: https://sciqlop.github.io/sciqlop-appstore/assets/sciqlop-copilot/card.png
+screenshots:
+- https://sciqlop.github.io/sciqlop-appstore/assets/sciqlop-copilot/card.png
 versions:
 - version: 0.1.0
   sciqlop: '>=0.12,<0.13'
   pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_copilot/v0.1.0/sciqlop_copilot-0.1.0-py3-none-any.whl
+- version: 0.1.1
+  sciqlop: '>=0.12,<0.14'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_copilot/v0.1.1/sciqlop_copilot-0.1.1-py3-none-any.whl

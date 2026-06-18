@@ -8,6 +8,9 @@ tags:
 - cdf
 - inspector
 - tools
+image: https://sciqlop.github.io/sciqlop-appstore/assets/cdf-workbench/card.png
+screenshots:
+- https://sciqlop.github.io/sciqlop-appstore/assets/cdf-workbench/card.png
 versions:
 - version: 0.2.0
   sciqlop: '>=0.10'
@@ -21,3 +24,6 @@ versions:
 - version: 0.4.0
   sciqlop: '>=0.12,<0.13'
   pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/cdf_workbench/v0.4.0/sciqlop_cdf_workbench-0.4.0-py3-none-any.whl
+- version: 0.4.1
+  sciqlop: '>=0.12,<0.14'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/cdf_workbench/v0.4.1/sciqlop_cdf_workbench-0.4.1-py3-none-any.whl
