@@ -8,6 +8,7 @@ GitHub API and injects it as ``stars`` into the output.
 
 import json
 import os
+import shutil
 import sys
 import urllib.request
 from pathlib import Path
@@ -146,6 +147,12 @@ def main():
 
     site = Path("site")
     site.mkdir(exist_ok=True)
+
+    # Publish static assets (cards/screenshots) so the `assets/...` image URLs
+    # in index.json resolve on Pages — the workflow only deploys `site/`.
+    assets = Path("assets")
+    if assets.is_dir():
+        shutil.copytree(assets, site / "assets", dirs_exist_ok=True)
 
     (site / "index.json").write_text(json.dumps(entries, indent=2))
 
