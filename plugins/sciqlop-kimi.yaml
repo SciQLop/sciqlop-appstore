@@ -1,0 +1,15 @@
+name: Kimi
+type: plugin
+description: Kimi chat dock for SciQLop (drives the Kimi Code CLI over ACP)
+author: Alexis Jeandet
+license: MIT
+github: SciQLop/sciqlop-plugins
+tags:
+- agent
+- chat
+- llm
+- moonshot
+versions:
+- version: 0.2.0
+  sciqlop: '>=0.13,<0.14'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_kimi/v0.2.0/sciqlop_kimi-0.2.0-py3-none-any.whl
