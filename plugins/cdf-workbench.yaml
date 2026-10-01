@@ -27,3 +27,6 @@ versions:
 - version: 0.4.1
   sciqlop: '>=0.12,<0.14'
   pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/cdf_workbench/v0.4.1/sciqlop_cdf_workbench-0.4.1-py3-none-any.whl
+- version: 0.4.2
+  sciqlop: '>=0.12,<0.15'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/cdf_workbench/v0.4.2/sciqlop_cdf_workbench-0.4.2-py3-none-any.whl
