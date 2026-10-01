@@ -24,3 +24,6 @@ versions:
 - version: 0.2.4
   sciqlop: '>=0.12,<0.14'
   pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_msa/v0.2.4/sciqlop_msa-0.2.4-py3-none-any.whl
+- version: 0.3.0
+  sciqlop: '>=0.12,<0.14'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_msa/v0.3.0/sciqlop_msa-0.3.0-py3-none-any.whl
