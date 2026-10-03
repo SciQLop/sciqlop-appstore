@@ -1,0 +1,16 @@
+name: MMS Particle Spectra (pyspedas)
+type: plugin
+description: 'Experimental: MMS FPI/HPCA energy, pitch-angle and gyrophase spectrograms computed by pyspedas'
+author: Alexis Jeandet
+license: MIT
+github: SciQLop/sciqlop-plugins
+tags:
+- data-provider
+- mms
+- particles
+- magnetosphere
+- experimental
+versions:
+- version: 0.1.0
+  sciqlop: '>=0.14,<0.15'
+  pip: https://github.com/SciQLop/sciqlop-plugins/releases/download/sciqlop_pyspedas/v0.1.0/sciqlop_pyspedas-0.1.0-py3-none-any.whl
