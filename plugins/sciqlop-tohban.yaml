@@ -1,0 +1,16 @@
+name: Tohban
+type: plugin
+description: Review BepiColombo/Mio observation plans (.evt) during Tohban meetings, shown as one interval timeline with a lane per instrument and its operation modes stacked in fixed rows
+author: Alexis Jeandet (LPP)
+license: MIT
+github: jeandet/sciqlop_tohban
+tags:
+- bepi-colombo
+- mio
+- operations
+- planning
+- timeline
+versions:
+- version: 0.1.0
+  sciqlop: '>=0.14,<0.15'
+  pip: https://github.com/jeandet/sciqlop_tohban/releases/download/v0.1.0/sciqlop_tohban-0.1.0-py3-none-any.whl
