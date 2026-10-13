@@ -1,10 +1,10 @@
 name: Tohban
 type: plugin
-description: Review BepiColombo/Mio observation plans (.evt) during Tohban meetings, shown as one interval timeline with a summary row per instrument (or every mode stacked) and quick instrument/mode filters
+description: Review BepiColombo/Mio observation plans (.evt) during Tohban meetings, shown as one interval timeline with a summary row per instrument (or every mode stacked) and quick instrument/mode filters, plus SPICE views of the trajectory, plan folded onto one orbit, MSASI field of view, distances and expected regions
 author: Alexis Jeandet (LPP)
 license: MIT
 github: jeandet/sciqlop_tohban
-image: https://raw.githubusercontent.com/jeandet/sciqlop_tohban/v0.3.0/sciqlop_tohban/resources/bepicolombo.png
+image: https://raw.githubusercontent.com/jeandet/sciqlop_tohban/v0.4.0/sciqlop_tohban/resources/bepicolombo.png
 tags:
 - bepi-colombo
 - mio
@@ -21,3 +21,6 @@ versions:
 - version: 0.3.0
   sciqlop: '>=0.14,<0.15'
   pip: https://github.com/jeandet/sciqlop_tohban/releases/download/v0.3.0/sciqlop_tohban-0.3.0-py3-none-any.whl
+- version: 0.4.0
+  sciqlop: '>=0.14,<0.15'
+  pip: https://github.com/jeandet/sciqlop_tohban/releases/download/v0.4.0/sciqlop_tohban-0.4.0-py3-none-any.whl
