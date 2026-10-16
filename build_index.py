@@ -4,13 +4,19 @@ Supports multiple entry types (plugins, workspaces, templates, examples) stored
 in separate directories.  Each entry may optionally include a ``github`` field
 (owner/repo) — when present the build fetches the repo's star count from the
 GitHub API and injects it as ``stars`` into the output.
+
+Each plugin version whose ``pip`` target is a wheel URL gets the ``provides``
+of the ``plugin.json`` inside that wheel (SciQLop finds the plugin that brings
+a missing panel kind through it), unless the YAML already sets ``provides``.
 """
 
+import io
 import json
 import os
 import shutil
 import sys
 import urllib.request
+import zipfile
 from pathlib import Path
 
 import yaml
@@ -46,6 +52,36 @@ def _fetch_stars(github_slug: str) -> int | None:
     except Exception as exc:
         print(f"  WARNING: could not fetch stars for {github_slug}: {exc}", file=sys.stderr)
         return None
+
+
+def _manifest_in(wheel: zipfile.ZipFile) -> str | None:
+    return next((n for n in wheel.namelist() if n.count("/") == 1 and n.endswith("/plugin.json")), None)
+
+
+def wheel_provides(url: str) -> dict | None:
+    """``provides`` of the plugin.json at the top of a wheel's package; None when the wheel cannot be read."""
+    try:
+        with urllib.request.urlopen(url, timeout=30) as resp:
+            data = resp.read()
+        with zipfile.ZipFile(io.BytesIO(data)) as wheel:
+            manifest = _manifest_in(wheel)
+            return json.loads(wheel.read(manifest)).get("provides", {}) if manifest else {}
+    except Exception as exc:
+        print(f"  WARNING: could not read provides from {url}: {exc}", file=sys.stderr)
+        return None
+
+
+def enrich_with_provides(entries: list[dict], read=wheel_provides) -> None:
+    for entry in entries:
+        if entry.get("type", "plugin") != "plugin":
+            continue
+        for version in entry.get("versions", []):
+            pip = version.get("pip", "")
+            if "provides" in version or not pip.endswith(".whl"):
+                continue
+            provides = read(pip)
+            if provides:
+                version["provides"] = provides
 
 
 def _is_abs_url(value: object) -> bool:
@@ -144,6 +180,7 @@ def main():
     entries = load_entries(Path("."))
 
     enrich_with_stars(entries)
+    enrich_with_provides(entries)
 
     site = Path("site")
     site.mkdir(exist_ok=True)
